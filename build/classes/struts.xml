@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="i18n" />
+	<package name="default" namespace="/" extends="struts-default">
+		<action name="role" class="com.benghuai3.action.RoleInfoAction" method="selectRole">
+			<result name="success">/roleDetail.jsp</result>
+		</action>
+		
+<!-- 		主页获取角色头像 -->
+		<action name="rolehead" class="com.benghuai3.action.RoleInfoAction" method="selectRoleHead">
+			<result name="success">/index.jsp</result>
+		</action>
+		
+<!-- 		切换角色显示 -->
+		<action name="change" class="com.benghuai3.action.RoleInfoAction" method="change">
+			<result name="success">/roleDetail.jsp</result>
+		</action>
+		
+<!-- 		角色页面通过id查找对应角色信息 -->
+		<action name="selectById" class="com.benghuai3.action.RoleInfoAction" method="selectById">
+			<result name="success">/roleDetail.jsp</result>
+		</action>
+		
+<!-- 		角色页面获取所有角色的图片和类型 -->
+		<action name="selectAllRoles" class="com.benghuai3.action.RoleInfoAction" method="selectAllRoles">
+			<result name="success">/juese.jsp</result>
+		</action>
+		
+<!-- 		获取所有游戏资讯 -->
+		<action name="allGameMessage" class="com.benghuai3.action.GameMessageAction" method="selectAllGameMessage">
+			<result name="success">/zixun.jsp</result>
+		</action>
+		
+<!-- 		显示更多游戏资讯 -->
+		<action name="moreMessage" class="com.benghuai3.action.GameMessageAction" method="moreMessage">
+			<result name="success">/zixun.jsp</result>
+		</action>
+		
+<!-- 		后台网页访问action获取数据 -->
+		<action name="houtaiaction" class="com.benghuai3.action.HoutaiAction" method="getAllRoleMenu">
+			<result name="success">/houtai.jsp</result>
+		</action>
+		
+<!-- 		后台网页传递更新的数据并存入数据库 -->
+		<action name="updateaction" class="com.benghuai3.action.HoutaiAction" method="updateAction">
+			<result name="success">/houtai.jsp</result>
+		</action>
+	</package>
+</struts>

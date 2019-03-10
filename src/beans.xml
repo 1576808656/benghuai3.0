@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+		<context:component-scan base-package="com.benghuai3.*" />
+		<context:property-placeholder location="classpath:db.properties"/>
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+				p:driverClass="${jdbc.driver}"
+				p:jdbcUrl="${jdbc.url}"
+				p:user="${jdbc.user}"
+				p:password="${jdbc.password}"
+				p:minPoolSize="${jdbc.minPoolSize}"
+				p:maxPoolSize="${jdbc.maxPoolSize}"/>
+				
+		<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+					<prop key="hibernate.hbm2ddl.auto">update</prop>
+				</props>
+			</property>
+			<property name="annotatedClasses">
+				<value>
+					com.benghuai3.bean.RoleMessage,com.benghuai3.bean.RoleInfo,
+					com.benghuai3.bean.RoleHeadPic,com.benghuai3.bean.RoleMenu,
+					com.benghuai3.bean.GameMessage,com.benghuai3.bean.GameNews
+				</value>
+			</property>
+		</bean>
+		
+		<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate"
+				p:sessionFactory-ref="sessionFactory"/>
+		
+		<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+				p:sessionFactory-ref="sessionFactory"/>
+				
+		<tx:advice id="txAdvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<tx:method name="*" propagation="REQUIRED" read-only="false"/>
+			</tx:attributes>
+		</tx:advice>
+		<tx:annotation-driven transaction-manager="transactionManager"/>
+		
+<!-- 		<aop:config> -->
+<!-- 			<aop:pointcut expression="execution(* com.benghuai3.service..*(..))" id="myPointcut"/> -->
+<!-- 			<aop:advisor advice-ref="transactionManager" pointcut-ref="myPointcut"/> -->
+<!-- 		</aop:config> -->
+</beans>
